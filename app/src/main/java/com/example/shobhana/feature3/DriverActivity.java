@@ -35,6 +35,7 @@ public class DriverActivity extends AppCompatActivity {
 
 
         ButterKnife.bind(this);
+
         TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
         imei=telephonyManager.getDeviceId();
 
