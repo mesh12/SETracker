@@ -91,6 +91,7 @@ public class DriverActivity extends AppCompatActivity {
 
         PayloadData="imei="+imei+"&phonenumber="+mobile+"&name="+name+"&id="+id+"&usertype="+"driver";
 
+
         SendDetails object=new SendDetails();
         object.execute(PayloadData);
 

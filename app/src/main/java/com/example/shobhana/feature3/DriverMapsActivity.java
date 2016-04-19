@@ -237,6 +237,7 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
         String coordinates1=currentLatitude+","+currentLongitude;
         String coordinates="location="+coordinates1+"&imei="+imei;
 
+
         LatLng loc = new LatLng(currentLatitude,currentLongitude);
 
         mMap.addMarker(new MarkerOptions().position(loc).title("current location"));

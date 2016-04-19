@@ -110,6 +110,7 @@ public class StudentActivity extends AppCompatActivity {
 
         TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
         imei=telephonyManager.getDeviceId();
+
         PayloadData="imei="+imei+"&phonenumber="+mobile+"&name="+name+"&age="+age+"&area="+area+"&usertype="+"student";
 
         //Code to send data to server: calling thread here

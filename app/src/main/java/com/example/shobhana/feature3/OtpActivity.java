@@ -21,6 +21,7 @@ public class OtpActivity extends AppCompatActivity {
         findViewById(R.id.btn_next).setOnClickListener(handleClick);
 
 
+
     }
 
     private View.OnClickListener handleClick = new View.OnClickListener(){

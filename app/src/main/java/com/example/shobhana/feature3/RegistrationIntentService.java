@@ -143,6 +143,7 @@ public class RegistrationIntentService extends IntentService {
 
         register_token="token="+token+"&imei="+imei;
         Log.i("phone number",imei);
+
         new SendRegistration().execute(register_token);
 
     }

@@ -37,6 +37,7 @@ public class MapsMainActivity extends AppCompatActivity {
 
     EditText text;
     String textMsg;
+
     private LocationManager mlocation;
     private LocationListener nlocation;
     private Location llocation;

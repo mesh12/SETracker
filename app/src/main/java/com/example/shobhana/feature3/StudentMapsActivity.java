@@ -141,6 +141,7 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
                         TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
                         String imei=telephonyManager.getDeviceId();
                         String message="message=hello"+"&imei="+imei+"&usertype=student";
+
                         System.out.println("emergency message="+emsg);
                         SendEmergency eobj=new SendEmergency();
                         eobj.execute(message);
