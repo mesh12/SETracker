@@ -232,6 +232,10 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
 
         String coordinates1=currentLatitude+","+currentLongitude;
         String coordinates="location="+coordinates1+"&phonenumber=9844116260";
+
+        LatLng loc = new LatLng(currentLatitude,currentLongitude);
+
+        mMap.addMarker(new MarkerOptions().position(loc).title("current location"));
         DriverSendCoordinates ob=new DriverSendCoordinates();
         ob.execute(coordinates);
     }
