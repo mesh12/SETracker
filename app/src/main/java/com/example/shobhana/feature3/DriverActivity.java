@@ -2,6 +2,7 @@ package com.example.shobhana.feature3;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -16,6 +17,8 @@ import butterknife.ButterKnife;
 public class DriverActivity extends AppCompatActivity {
     private static final String TAG = "DriverActivity";
     boolean register = true;
+    public static final String PREFS_NAME = "LoginPrefs";
+    String PayloadData;
 
     @Bind(R.id.input_dname) EditText _dname;
     @Bind(R.id.input_dmobile) EditText _dmobile;
@@ -26,6 +29,8 @@ public class DriverActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver);
+
+
         ButterKnife.bind(this);
 
         //insert code for sending reg data to server
@@ -40,6 +45,12 @@ public class DriverActivity extends AppCompatActivity {
 
                 //Enable below for OTP
                 if(register == true) {
+                    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString("logged", "logged");
+                    editor.putString("who", "driver");
+                    editor.commit();
+
                     Bundle extras = new Bundle();
                     extras.putString("who", "driver");
                     Intent intent = new Intent(getApplicationContext(), OtpActivity.class);
@@ -70,7 +81,13 @@ public class DriverActivity extends AppCompatActivity {
 
         String name = _dname.getText().toString();
         String mobile = _dmobile.getText().toString();
-        String usn = _did.getText().toString();
+        String id=_did.getText().toString();
+
+
+        PayloadData="phonenumber="+mobile+"&name="+name+"&id="+id+"&usertype="+"driver";
+
+        SendDetails object=new SendDetails();
+        object.execute(PayloadData);
 
         // TODO: Implement code to send data to server.(same as student)
 

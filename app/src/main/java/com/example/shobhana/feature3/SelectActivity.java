@@ -33,14 +33,14 @@ public class SelectActivity extends AppCompatActivity {
             }
         });
 
-        /*_selectdriver.setOnClickListener(new View.OnClickListener() {
+        _selectdriver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Start the Signup activity for Driver
                 Intent intent = new Intent(getApplicationContext(), DriverActivity.class);
                 startActivityForResult(intent, REQUEST_SIGNUP);
             }
-        });*/
+        });
     }
 
     @Override

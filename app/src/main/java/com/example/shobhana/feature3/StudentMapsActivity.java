@@ -60,7 +60,9 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_student_maps);
+
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -167,7 +169,7 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
         LatLng loc = new LatLng(12.9355, 77.5341);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
 
-        Bundle bundle;
+       /* Bundle bundle;
 
         if ((bundle = getIntent().getExtras()) != null) {
 
@@ -184,7 +186,7 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
             mMap.moveCamera(CameraUpdateFactory.newLatLng(currentMarkerPosition));
         } else {
             System.out.println("null");
-        }
+        }*/
 
 
         init();
@@ -495,9 +497,29 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
 
             setup(place);
 
-
         }
+
     }
 
+    @Override
+    public void onBackPressed(){
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 
+    /*@Override
+    public void onBackPressed() {
+
+        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
+                .setMessage("Are you sure you want to exit?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        System.exit(0);
+                    }
+                }).setNegativeButton("No", null).show();
+    }*/
 }

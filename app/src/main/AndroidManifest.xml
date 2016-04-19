@@ -44,9 +44,19 @@
         <activity
             android:name=".StudentActivity"
             android:theme="@style/AppTheme.Dark" />
+
+        <activity
+            android:name=".DriverActivity"
+            android:theme="@style/AppTheme.Dark" />
+
         <activity
             android:name=".OtpActivity"
             android:theme="@style/AppTheme.Dark" />
+
+        <activity
+            android:name=".DriverMapsActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
             android:name=".MapsMainActivity"
@@ -113,7 +123,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".StudentMapsActivity"
 
             android:label="@string/title_activity_maps" >
 

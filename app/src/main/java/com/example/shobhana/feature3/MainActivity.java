@@ -1,6 +1,7 @@
 package com.example.shobhana.feature3;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -9,17 +10,32 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
    // public static boolean hasReg = false;
+    public static final String PREFS_NAME = "LoginPrefs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gcm);
 
-        //for one time login check if the phone number already exists in dB
-        // if present dont display the login screen
-        //if (!hasReg) {
-            Intent intent = new Intent(this, SelectActivity.class);
+        //checked if logged in already
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        if (settings.getString("logged", "").toString().equals("logged")) {
+            if (settings.getString("who", "").toString().equals("student")) {
+                Intent intent = new Intent(MainActivity.this, StudentMapsActivity.class);
+                startActivity(intent);
+            }
+            else if (settings.getString("who", "").toString().equals("driver")) {
+                Intent intent = new Intent(MainActivity.this, DriverMapsActivity.class);
+                startActivity(intent);
+            }
+        }
+
+        //otherwise go to the registration page
+        else{
+            Intent intent = new Intent(getApplicationContext(), SelectActivity.class);
             startActivity(intent);
+        }
+
         //}
 
 

@@ -2,9 +2,11 @@ package com.example.shobhana.feature3;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,10 +26,11 @@ import java.net.URL;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class StudentActivity extends ActionBarActivity {
+public class StudentActivity extends AppCompatActivity {
     private static final String TAG = "StudentActivity";
+    public static final String PREFS_NAME = "LoginPrefs";
 
-    /*TODO Retrieve phone number programmatically (see MapsActivity.java) and request permission for the same */
+    /*TODO Retrieve phone number programmatically (see StudentMapsActivity.java) and request permission for the same */
     /*If permission is granted proceed with registration and use it to direct user to maps screen on
     * subsequent logins*/
 
@@ -45,6 +48,8 @@ public class StudentActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student);
+
+
         ButterKnife.bind(this);
 
         _sreg.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +65,12 @@ public class StudentActivity extends ActionBarActivity {
 
                 if(register==true)
                 {
+                    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString("logged", "logged");
+                    editor.putString("who", "student");
+                    editor.commit();
+
                     Bundle extras = new Bundle();
                     extras.putString("who", "student");
                     Intent intent = new Intent(getApplicationContext(), OtpActivity.class);
@@ -95,7 +106,7 @@ public class StudentActivity extends ActionBarActivity {
         String area = _area.getText().toString();
 
         //TODO Add the fields for usertype and area .Server accepts phone,age and name as of now
-        PayloadData="phonenumber="+mobile+"&name="+name+"&age="+age;//"&area="+area+"&usertype="+"student";
+        PayloadData="phonenumber="+mobile+"&name="+name+"&age="+age+"&area="+area+"&usertype="+"student";
 
         //Code to send data to server: calling thread here
         new TransferData().execute(PayloadData);

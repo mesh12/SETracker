@@ -40,7 +40,7 @@ public class MyGcmListenerService extends GcmListenerService {
 
             Log.i(TAG ,from);
             Log.i(TAG, message);
-            Intent intent = new Intent(this, MapsActivity.class);
+            Intent intent = new Intent(this, StudentMapsActivity.class);
             intent.putExtra("LatLng", message);
             startActivity(intent);
 

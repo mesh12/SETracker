@@ -159,7 +159,7 @@ public class MapsMainActivity extends AppCompatActivity {
         String message="location="+coordinates+"&phonenumber="+mPhoneNumber;
 
         System.out.println(coordinates);//null value
-        SendCoordinates object=new SendCoordinates(message);
+        StudentSendCoordinates object=new StudentSendCoordinates(message);
         object.init();
     }*/
 
