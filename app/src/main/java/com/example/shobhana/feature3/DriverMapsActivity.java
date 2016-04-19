@@ -2,6 +2,7 @@ package com.example.shobhana.feature3;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,6 +14,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -229,9 +231,11 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
         double currentLongitude = location.getLongitude();
 
         System.out.println("new latitude= " + currentLatitude + "  new longitude= " + currentLongitude);
+        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        String imei=telephonyManager.getDeviceId();
 
         String coordinates1=currentLatitude+","+currentLongitude;
-        String coordinates="location="+coordinates1+"&phonenumber=9844116260";
+        String coordinates="location="+coordinates1+"&imei="+imei;
 
         LatLng loc = new LatLng(currentLatitude,currentLongitude);
 

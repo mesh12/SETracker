@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
@@ -36,7 +37,6 @@ public class MapsMainActivity extends AppCompatActivity {
 
     EditText text;
     String textMsg;
-    String mPhoneNumber = "9844116260";
     private LocationManager mlocation;
     private LocationListener nlocation;
     private Location llocation;
@@ -191,7 +191,10 @@ public class MapsMainActivity extends AppCompatActivity {
         //String s="Hello from gcm";
         String message=null;
 
-        message="message="+textMsg+"&phonenumber="+mPhoneNumber;
+        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        String imei=telephonyManager.getDeviceId();
+
+        message="message="+textMsg+"&imei="+imei;
         SendMessage object=new SendMessage(message);
         object.init();
 

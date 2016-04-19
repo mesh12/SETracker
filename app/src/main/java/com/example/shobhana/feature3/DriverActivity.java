@@ -1,10 +1,12 @@
 package com.example.shobhana.feature3;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +21,7 @@ public class DriverActivity extends AppCompatActivity {
     boolean register = true;
     public static final String PREFS_NAME = "LoginPrefs";
     String PayloadData;
+    String imei;
 
     @Bind(R.id.input_dname) EditText _dname;
     @Bind(R.id.input_dmobile) EditText _dmobile;
@@ -32,6 +35,8 @@ public class DriverActivity extends AppCompatActivity {
 
 
         ButterKnife.bind(this);
+        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        imei=telephonyManager.getDeviceId();
 
         //insert code for sending reg data to server
         //Dont send data till OTP confirms
@@ -84,7 +89,7 @@ public class DriverActivity extends AppCompatActivity {
         String id=_did.getText().toString();
 
 
-        PayloadData="phonenumber="+mobile+"&name="+name+"&id="+id+"&usertype="+"driver";
+        PayloadData="imei="+imei+"&phonenumber="+mobile+"&name="+name+"&id="+id+"&usertype="+"driver";
 
         SendDetails object=new SendDetails();
         object.execute(PayloadData);

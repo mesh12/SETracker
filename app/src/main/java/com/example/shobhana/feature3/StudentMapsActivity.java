@@ -1,6 +1,7 @@
 package com.example.shobhana.feature3;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -136,7 +138,9 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
                         emsg = et.getText().toString();
                         System.out.println(emsg);
 
-                        String message="message=hello"+"&phonenumber=9844116260"+"&usertype=student";
+                        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+                        String imei=telephonyManager.getDeviceId();
+                        String message="message=hello"+"&imei="+imei+"&usertype=student";
                         System.out.println("emergency message="+emsg);
                         SendEmergency eobj=new SendEmergency();
                         eobj.execute(message);

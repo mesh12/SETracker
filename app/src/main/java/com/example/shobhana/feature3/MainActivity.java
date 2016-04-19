@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
         //checked if logged in already
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         if (settings.getString("logged", "").toString().equals("logged")) {
+
             if (settings.getString("who", "").toString().equals("student")) {
                 Intent intent = new Intent(MainActivity.this, StudentMapsActivity.class);
                 startActivity(intent);

@@ -42,7 +42,7 @@ public class RegistrationIntentService extends IntentService {
    // public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
    // public static final String REGISTRATION_COMPLETE = "registrationComplete";
     private static final String[] TOPICS = {"global"};
-    String mPhoneNumber="9844116260";
+
 
     private static final String TAG = "RegIntentService";
 
@@ -138,8 +138,11 @@ public class RegistrationIntentService extends IntentService {
     {
         String register_token=null;
 
-        register_token="token="+token+"&phonenumber="+mPhoneNumber;
-        Log.i("phone number",mPhoneNumber);
+        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        String imei=telephonyManager.getDeviceId();
+
+        register_token="token="+token+"&imei="+imei;
+        Log.i("phone number",imei);
         new SendRegistration().execute(register_token);
 
     }
