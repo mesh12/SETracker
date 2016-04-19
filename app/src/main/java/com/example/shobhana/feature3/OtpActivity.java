@@ -12,7 +12,7 @@ import android.view.View;
 public class OtpActivity extends AppCompatActivity {
     public static final String PREFS_NAME = "LoginPrefs";
 
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,14 +20,13 @@ public class OtpActivity extends AppCompatActivity {
 
         findViewById(R.id.btn_next).setOnClickListener(handleClick);
 
-
-
+        
     }
 
     private View.OnClickListener handleClick = new View.OnClickListener(){
         public void onClick(View arg0)
         {
-
+            
             Bundle b = new Bundle();
             Intent in = getIntent();
             Bundle extras = in.getExtras();
@@ -50,5 +49,5 @@ public class OtpActivity extends AppCompatActivity {
         }
     };
 
-
+    
 }
