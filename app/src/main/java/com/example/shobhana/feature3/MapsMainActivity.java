@@ -232,7 +232,7 @@ public class MapsMainActivity extends AppCompatActivity {
 
         }
 
-        message="message="+textMsg+"&imei="+imei;
+        message="message="+textMsg+"&phonenumber="+imei;
         SendMessage object=new SendMessage(message);
         object.init();
 

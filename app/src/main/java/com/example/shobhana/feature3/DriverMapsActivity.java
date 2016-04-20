@@ -58,6 +58,7 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
     int count = 0;
     String s1 = null;
     String s2 = null;
+    String emsg;
     GoogleApiClient gClient = null;
     Location LastLocation,CurrentLocation;
     LocationRequest mLocationRequest;
@@ -73,7 +74,7 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_maps);
+        setContentView(R.layout.activity_driver_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -130,7 +131,6 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
 
                 final EditText et = new EditText(DriverMapsActivity.this);
                 et.setHint("Enter message");
-                final String emsg = et.getText().toString();
 
                 LinearLayout.LayoutParams tv1Params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 tv1Params.bottomMargin = 5;
@@ -151,9 +151,16 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
                 alertDialogBuilder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                        String message = "message=" + emsg + "&phonenumber=9844116260" + "&usertype=driver";
-                       // SendEmergency eobj = new SendEmergency();
-                       // eobj.execute(message);
+
+                        emsg = et.getText().toString();
+                        System.out.println(emsg);
+
+                        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+                        String imei=telephonyManager.getDeviceId();
+                        String message="message=hello"+"&phonenumber="+imei+"&usertype=driver";
+
+                       SendEmergency eobj = new SendEmergency();
+                       eobj.execute(message);
 
                     }
                 });
@@ -266,7 +273,7 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
         String imei=telephonyManager.getDeviceId();
 
         String coordinates1=currentLatitude+","+currentLongitude;
-        String coordinates="location="+coordinates1+"&imei="+imei;
+        String coordinates="location="+coordinates1+"&phonenumber="+imei+"&usertype=driver"+"&actualDriver=yes";
 
 
         LatLng loc = new LatLng(currentLatitude,currentLongitude);

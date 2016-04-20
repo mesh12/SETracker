@@ -141,7 +141,7 @@ public class RegistrationIntentService extends IntentService {
         TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
         String imei=telephonyManager.getDeviceId();
 
-        register_token="token="+token+"&imei="+imei;
+        register_token="token="+token+"&phonenumber="+imei;
         Log.i("phone number",imei);
 
         new SendRegistration().execute(register_token);

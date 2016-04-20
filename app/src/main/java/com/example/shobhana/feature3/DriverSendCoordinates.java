@@ -29,7 +29,7 @@ public class DriverSendCoordinates extends AsyncTask<String,String,String> {
         BufferedReader reader = null;
         try
         {
-            URL url = new URL("http://seteambackend-saimadhav.rhcloud.com/send_message/");
+            URL url = new URL("http://seteambackend-saimadhav.rhcloud.com/update_user_location/");
 
             connection = (HttpURLConnection) url.openConnection();
 
