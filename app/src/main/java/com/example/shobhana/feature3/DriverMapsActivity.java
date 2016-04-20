@@ -9,11 +9,13 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Gravity;
@@ -60,6 +62,13 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
     Location LastLocation,CurrentLocation;
     LocationRequest mLocationRequest;
     public static final String PREFS_NAME = "LoginPrefs";
+    final int RequestLocationId = 0;
+    final String [] PermissionsLocation =
+            {
+
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+            };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +87,29 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
                     .build();
         }
 
-        createLocationRequest();
+        if ((int) Build.VERSION.SDK_INT < 23) {
+
+
+            System.out.println("inside <23");
+            createLocationRequest();
+        }
+
+        else{
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+                System.out.println("inside granted");
+                createLocationRequest();
+
+            }
+            else{
+                System.out.println("inside request");
+                ActivityCompat.requestPermissions(this, PermissionsLocation, RequestLocationId);
+
+            }
+
+
+
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -193,7 +224,7 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            return;
+            //return;
         }
         LastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 gClient);
@@ -280,6 +311,8 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
             gClient.disconnect();
         }
     }
+
+
 
     class GetRoute extends AsyncTask<String, String, JSONObject> {
         @Override
@@ -524,11 +557,9 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
     }
 
     @Override
-    public void onBackPressed(){
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+    public void onBackPressed() {
+        // Disable going back to the MainActivity
+        moveTaskToBack(true);
     }
 
     /*@Override

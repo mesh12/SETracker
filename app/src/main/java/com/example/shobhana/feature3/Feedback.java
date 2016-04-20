@@ -16,11 +16,11 @@ public class Feedback extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_feedback);
+        setContentView(R.layout.activity_feedback1);
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
-        RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+        RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar1);
         Drawable drawable = ratingBar.getProgressDrawable();
         drawable.setColorFilter(Color.parseColor("#D6E59B"), PorterDuff.Mode.SRC_ATOP);
 

@@ -1,11 +1,17 @@
 package com.example.shobhana.feature3;
 
+import android.*;
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
@@ -46,6 +52,12 @@ public class StudentActivity extends AppCompatActivity {
     String PayloadData="";
     String imei;
     boolean register=true;
+    final int RequestImeiid = 0;
+    final String [] PermissionsImei =
+            {
+
+                    Manifest.permission.READ_PHONE_STATE
+            };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,10 +102,12 @@ public class StudentActivity extends AppCompatActivity {
         Log.d(TAG, "Login");
 
         if (!validate()) {
+            register=false;
             onLoginFailed();
             return;
         }
 
+        register=true;
         _sreg.setEnabled(false);
 
         final ProgressDialog progressDialog = new ProgressDialog(StudentActivity.this,
@@ -108,8 +122,33 @@ public class StudentActivity extends AppCompatActivity {
         String age = _age.getText().toString();
         String area = _area.getText().toString();
 
-        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-        imei=telephonyManager.getDeviceId();
+        if ((int) Build.VERSION.SDK_INT < 23) {
+
+
+            System.out.println("inside <23");
+            TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+            imei=telephonyManager.getDeviceId();
+        }
+
+        else{
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED ) {
+
+                System.out.println("inside granted");
+                TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+                imei=telephonyManager.getDeviceId();
+
+            }
+            else{
+                System.out.println("inside request");
+                ActivityCompat.requestPermissions(this, PermissionsImei, RequestImeiid);
+
+            }
+
+
+
+        }
+
+
 
         PayloadData="imei="+imei+"&phonenumber="+mobile+"&name="+name+"&age="+age+"&area="+area+"&usertype="+"student";
 

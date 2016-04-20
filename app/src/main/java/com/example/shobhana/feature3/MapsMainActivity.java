@@ -1,16 +1,22 @@
 package com.example.shobhana.feature3;
 
+import android.*;
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
@@ -51,6 +57,14 @@ public class MapsMainActivity extends AppCompatActivity {
     private ProgressBar mRegistrationProgressBar;
     private TextView mInformationTextView;
     private boolean isReceiverRegistered;
+    String imei;
+    final int RequestImeiid = 0;
+    final String [] PermissionsImei =
+            {
+
+                    Manifest.permission.READ_PHONE_STATE
+            };
+
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -192,8 +206,31 @@ public class MapsMainActivity extends AppCompatActivity {
         //String s="Hello from gcm";
         String message=null;
 
-        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-        String imei=telephonyManager.getDeviceId();
+        if ((int) Build.VERSION.SDK_INT < 23) {
+
+
+            System.out.println("inside <23");
+            TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+            imei=telephonyManager.getDeviceId();
+        }
+
+        else{
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED ) {
+
+                System.out.println("inside granted");
+                TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+                imei=telephonyManager.getDeviceId();
+
+            }
+            else{
+                System.out.println("inside request");
+                ActivityCompat.requestPermissions(this, PermissionsImei, RequestImeiid);
+
+            }
+
+
+
+        }
 
         message="message="+textMsg+"&imei="+imei;
         SendMessage object=new SendMessage(message);

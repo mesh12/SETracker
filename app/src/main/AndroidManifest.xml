@@ -26,16 +26,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- Splash screen -->
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashScreen"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Dark">
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Dark">
         </activity>
         <activity
             android:name=".SelectActivity"
@@ -56,21 +64,16 @@
         <activity
             android:name=".DriverMapsActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.Dark"/>
 
         <activity
             android:name=".MapsMainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.Dark"/>
 
-
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-
-        </activity>
+        <activity
+            android:name=".StudentMapsActivity"
+            android:theme="@style/AppTheme.Dark" />
 
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
@@ -122,22 +125,11 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity
-            android:name=".StudentMapsActivity"
-
-            android:label="@string/title_activity_maps" >
-
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-        </activity>
 
         <activity
             android:name=".Feedback"
             android:label="@string/title_activity_feedback"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.Dark"></activity>
     </application>
 
 </manifest>

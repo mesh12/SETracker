@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gcm);
+        setContentView(R.layout.activity_select);
 
         //checked if logged in already
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
