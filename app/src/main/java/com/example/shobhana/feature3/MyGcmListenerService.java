@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -40,9 +41,19 @@ public class MyGcmListenerService extends GcmListenerService {
 
             Log.i(TAG ,from);
             Log.i(TAG, message);
-            Intent intent = new Intent(this, StudentMapsActivity.class);
-            intent.putExtra("LatLng", message);
+            SharedPreferences settings = getSharedPreferences(TokenStatus.GCM_MESSAGE, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("message", "gcm message");
+            editor.putString("LatLng", message);
+            editor.commit();
+
+            Bundle extras = new Bundle();
+            extras.putString("LatLng", message);
+            Intent intent = new Intent(getApplicationContext(), StudentMapsActivity.class);
+            intent.putExtras(extras);
             startActivity(intent);
+
+
 
         }
 

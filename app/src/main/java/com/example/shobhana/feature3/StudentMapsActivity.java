@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -170,9 +171,29 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         double currentLat, currentLng;
+        Bundle bundle = null;
 
         LatLng loc = new LatLng(12.9355, 77.5341);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
+
+        SharedPreferences settings = getSharedPreferences(TokenStatus.GCM_MESSAGE, 0);
+
+        if (settings.getString("message", "").equals("gcm message")) {
+
+            assert bundle != null;
+            String currentLocation = bundle.getString("LatLng");
+
+            String[] arrayLoc = currentLocation.split(",");
+
+            currentLat = Double.parseDouble(arrayLoc[0]);
+            currentLng = Double.parseDouble(arrayLoc[1]);
+
+            LatLng currentMarkerPosition = new LatLng(currentLat, currentLng);
+
+            mMap.addMarker(new MarkerOptions().position(currentMarkerPosition).title("current location"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(currentMarkerPosition));
+
+        }
 
        /* Bundle bundle;
 
