@@ -44,18 +44,7 @@ public class MapsMainActivity extends AppCompatActivity {
     EditText text;
     String textMsg;
 
-    private LocationManager mlocation;
-    private LocationListener nlocation;
-    private Location llocation;
-
-    String provider = "";
-    Context context;
-    double lat, lng;
-    String latlng, lastLocation;
-
     private BroadcastReceiver mRegistrationBroadcastReceiver;
-    private ProgressBar mRegistrationProgressBar;
-    private TextView mInformationTextView;
     private boolean isReceiverRegistered;
     String imei;
     final int RequestImeiid = 0;
@@ -76,14 +65,8 @@ public class MapsMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gcm);
-        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
 
         findViewById(R.id.button).setOnClickListener(handleClick);
-        //findViewById(R.id.lbutton).setOnClickListener(handleClick1);
-
-        //Gps gpsObject=new Gps(this);
-
 
         text = (EditText) findViewById(R.id.text);
 
@@ -98,10 +81,10 @@ public class MapsMainActivity extends AppCompatActivity {
                 boolean sentToken = sharedPreferences
                         .getBoolean(TokenStatus.SENT_TOKEN_TO_SERVER, false);
                 if (sentToken) {
-                    //mInformationTextView.setText(getString(R.string.gcm_send_message));
+
                     Toast.makeText(getBaseContext(), "token obtained", Toast.LENGTH_LONG).show();
                 } else {
-                    //mInformationTextView.setText(getString(R.string.token_error_message));
+
                     Toast.makeText(getBaseContext(), "Error...", Toast.LENGTH_LONG).show();
                 }
             }

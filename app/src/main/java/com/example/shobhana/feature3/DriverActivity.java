@@ -92,7 +92,7 @@ public class DriverActivity extends AppCompatActivity {
 
                     Bundle extras = new Bundle();
                     extras.putString("who", "driver");
-                    Intent intent = new Intent(getApplicationContext(), OtpActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), DriverMapsActivity.class);
                     intent.putExtras(extras);
                     startActivity(intent);
                 }
@@ -125,7 +125,7 @@ public class DriverActivity extends AppCompatActivity {
         String id=_did.getText().toString();
 
 
-        PayloadData="imei="+imei+"&phonenumber="+mobile+"&name="+name+"&id="+id+"&usertype="+"driver";
+        PayloadData="phonenumber="+imei+"&phone="+mobile+"&name="+name+"&id="+id+"&usertype="+"driver";
 
 
         SendDetails object=new SendDetails();

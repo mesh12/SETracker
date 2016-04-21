@@ -5,12 +5,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -24,7 +26,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -54,12 +58,15 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
 
     private GoogleMap mMap;
     double latitude, longitude, latitude1, longitude1;
+    final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     String route = "pescollege,corporationbangalore,MGRoadbangalore,indiranagar";
     int count = 0;
     String s1 = null;
     String s2 = null;
     String emsg;
     GoogleApiClient gClient = null;
+    private GoogleApiClient client;
+    private String TAG="DriverMapsActivity";
     Location LastLocation,CurrentLocation;
     LocationRequest mLocationRequest;
     public static final String PREFS_NAME = "LoginPrefs";
@@ -79,6 +86,35 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        //added
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        boolean sentToken = sharedPreferences
+                .getBoolean(TokenStatus.SENT_TOKEN_TO_SERVER, false);
+
+        if (sentToken) {
+            //mInformationTextView.setText(getString(R.string.gcm_send_message));
+            Toast.makeText(getBaseContext(), "token obtained", Toast.LENGTH_LONG).show();
+        } else {
+            //mInformationTextView.setText(getString(R.string.token_error_message));
+            Toast.makeText(getBaseContext(), "Error...", Toast.LENGTH_LONG).show();
+        }
+
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        if (checkPlayServices()) {
+            System.out.println("services are enabled");
+            Intent intent = new Intent(this, RegistrationIntentService.class);
+            startService(intent);
+            //sendMessage();
+        } else {
+            //go to message interface
+            Log.i("Token", "Token already obtained");
+            //sendMessage();
+
+
+        }
 
         if (gClient == null) {
             gClient = new GoogleApiClient.Builder(this)
@@ -175,6 +211,29 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
                 }
             }
         });
+    }
+
+    public boolean checkPlayServices() {
+        GoogleApiAvailability googleApi = GoogleApiAvailability.getInstance();
+        int result = googleApi.isGooglePlayServicesAvailable(this);
+        System.out.println(result);
+        if (result != ConnectionResult.SUCCESS) {
+            if (googleApi.isUserResolvableError(result)) {
+                googleApi.getErrorDialog(this, result, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+                Log.i(TAG, "This device is not supported.");
+                finish();
+            }
+
+            return false;
+        }
+
+        else
+        {
+            System.out.println("enabled");
+            return true;
+        }
     }
 
 

@@ -16,6 +16,7 @@ import com.google.android.gms.gcm.GcmListenerService;
 public class MyGcmListenerService extends GcmListenerService {
 
     private static final String TAG = "MyGcmListenerService";
+    public static final String PREFS_NAME = "LoginPrefs";
 
     public MyGcmListenerService() {
 
@@ -29,6 +30,7 @@ public class MyGcmListenerService extends GcmListenerService {
 
         super.onMessageReceived(from, data);
         String message ;
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 
         if((message=data.getString("message"))!=null){
 
@@ -40,8 +42,9 @@ public class MyGcmListenerService extends GcmListenerService {
         else if ((message=data.getString("location"))!=null){
 
             Log.i(TAG ,from);
+            System.out.println("IN GCM LOCATION");
             Log.i(TAG, message);
-            SharedPreferences settings = getSharedPreferences(TokenStatus.GCM_MESSAGE, 0);
+            /*SharedPreferences settings = getSharedPreferences(TokenStatus.GCM_MESSAGE, 0);
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("message", "gcm message");
             editor.putString("LatLng", message);
@@ -51,7 +54,12 @@ public class MyGcmListenerService extends GcmListenerService {
             extras.putString("LatLng", message);
             Intent intent = new Intent(getApplicationContext(), StudentMapsActivity.class);
             intent.putExtras(extras);
-            startActivity(intent);
+            startActivity(intent);*/
+            if (settings.getString("who", "").toString().equals("student")) {
+                Intent intent = new Intent(getApplicationContext(), StudentMapsActivity.class);
+                intent.putExtra("LatLng", message);
+                startActivity(intent);
+            }
 
 
 

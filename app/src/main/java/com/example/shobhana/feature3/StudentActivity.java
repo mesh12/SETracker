@@ -88,7 +88,7 @@ public class StudentActivity extends AppCompatActivity {
 
                     Bundle extras = new Bundle();
                     extras.putString("who", "student");
-                    Intent intent = new Intent(getApplicationContext(), OtpActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), StudentMapsActivity.class);
                     intent.putExtras(extras);
                     startActivity(intent);
                 }
@@ -150,7 +150,7 @@ public class StudentActivity extends AppCompatActivity {
 
 
 
-        PayloadData="imei="+imei+"&phonenumber="+mobile+"&name="+name+"&age="+age+"&area="+area+"&usertype="+"student";
+        PayloadData="phone="+mobile+"&phonenumber="+imei+"&name="+name+"&age="+age+"&area="+area+"&usertype="+"student";
 
         //Code to send data to server: calling thread here
         new TransferData().execute(PayloadData);
