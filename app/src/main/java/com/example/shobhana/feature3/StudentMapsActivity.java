@@ -176,10 +176,20 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
         LatLng loc = new LatLng(12.9355, 77.5341);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
 
-        Intent intent = getIntent();
+        /*Intent intent = getIntent();
         if (null != intent) {
             String CLatLng= intent.getStringExtra("LatLng");
            System.out.println("NEW LOCATION: "+ CLatLng);
+        }*/
+
+        SharedPreferences settings = getSharedPreferences(TokenStatus.GCM_MESSAGE, 0);
+
+        if (settings.getString("message", "").toString().equals("gcm message")) {
+
+            String x=settings.getString("LatLng","");
+            System.out.println("NEW LOCATION:"+x);
+
+
         }
 
        /* Bundle bundle;

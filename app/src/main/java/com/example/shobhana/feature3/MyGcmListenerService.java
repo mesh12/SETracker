@@ -56,11 +56,16 @@ public class MyGcmListenerService extends GcmListenerService {
             intent.putExtras(extras);
             startActivity(intent);*/
             if (settings.getString("who", "").toString().equals("student")) {
-                Intent intent = new Intent(getApplicationContext(), StudentMapsActivity.class);
+                /*Intent intent = new Intent(getApplicationContext(), StudentMapsActivity.class);
                 intent.putExtra("LatLng", message);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);*/
+                settings = getSharedPreferences(TokenStatus.GCM_MESSAGE, 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("message", "gcm message");
+                editor.putString("LatLng", message);
+                editor.commit();
 
-                startActivity(intent);
             }
 
 
