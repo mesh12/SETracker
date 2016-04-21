@@ -59,7 +59,7 @@ public class MyGcmListenerService extends GcmListenerService {
                 Intent intent = new Intent(getApplicationContext(), StudentMapsActivity.class);
                 intent.putExtra("LatLng", message);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                
+
                 startActivity(intent);
             }
 
