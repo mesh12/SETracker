@@ -66,7 +66,7 @@ public class MapsMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gcm);
 
-        findViewById(R.id.button).setOnClickListener(handleClick);
+        findViewById(R.id.btn_submit).setOnClickListener(handleClick);
 
         text = (EditText) findViewById(R.id.text);
 

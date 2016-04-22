@@ -11,20 +11,19 @@
 
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MapsMainActivity"
-    tools:showIn="@layout/activity_gcm"
-    android:background="@drawable/background">
+    tools:showIn="@layout/activity_gcm">
 
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textColorHint="#339933"
+        android:textColorHint="#FFF"
         android:hint="Enter text here"
         android:id="@+id/text"
-        android:textColor="#00004d"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@+id/button" />
+        android:textColor="#FFF"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@id/btn_submit"/>
 
-    <Button
+   <!-- <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#000000"
@@ -32,7 +31,21 @@
         android:id="@+id/button"
         android:gravity="center_horizontal"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true" />-->
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_submit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:text="SEND"
+        android:textColor="#FFF"
+        android:textSize="30sp"
+        android:theme="@style/MyButton"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="117dp" />
 
 
 

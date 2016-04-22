@@ -1,17 +1,23 @@
 package com.example.shobhana.feature3;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Gravity;
@@ -35,6 +41,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -46,14 +55,21 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class StudentMapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
+    public static GoogleMap mMap;
     double latitude, longitude, latitude1, longitude1;
     String route = "pescollege,corporationbangalore,MGRoadbangalore,indiranagar";
     int count = 0;
-    String s1 = null;
+    public String s1 = null;
     String s2 = null;
     String emsg;
     EditText et;
+    String imei;
+    final int RequestImeiid = 0;
+    final String [] PermissionsImei =
+            {
+
+                    android.Manifest.permission.READ_PHONE_STATE
+            };
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -139,9 +155,32 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
                         emsg = et.getText().toString();
                         System.out.println(emsg);
 
-                        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-                        String imei=telephonyManager.getDeviceId();
-                        String message="message=hello"+"&phonenumber="+imei+"&usertype=student";
+                        if ((int) Build.VERSION.SDK_INT < 23) {
+
+
+                            System.out.println("inside <23");
+                            TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+                            imei=telephonyManager.getDeviceId();
+                        }
+
+                        else{
+                            if (ContextCompat.checkSelfPermission(StudentMapsActivity.this, android.Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED ) {
+
+                                System.out.println("inside granted");
+                                TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+                                imei=telephonyManager.getDeviceId();
+
+                            }
+                            else{
+                                System.out.println("inside request");
+                                ActivityCompat.requestPermissions(StudentMapsActivity.this, PermissionsImei, RequestImeiid);
+
+                            }
+
+
+
+                        }
+                        String message="message="+emsg+"&phonenumber="+imei+"&usertype=student";
 
                         System.out.println("emergency message="+emsg);
                         SendEmergency eobj=new SendEmergency();
@@ -176,43 +215,34 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
         LatLng loc = new LatLng(12.9355, 77.5341);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
 
-        /*Intent intent = getIntent();
-        if (null != intent) {
-            String CLatLng= intent.getStringExtra("LatLng");
-           System.out.println("NEW LOCATION: "+ CLatLng);
-        }*/
 
-        SharedPreferences settings = getSharedPreferences(TokenStatus.GCM_MESSAGE, 0);
+        String CacheDir= Environment.getExternalStorageDirectory()+"/Location_coordinates.txt";
+        File f=new File(CacheDir);
+        try {
+            FileInputStream fstream=new FileInputStream(f);
+            BufferedReader br =new BufferedReader(new InputStreamReader(fstream));
+            String message;
 
-        if (settings.getString("message", "").toString().equals("gcm message")) {
+            while((message=br.readLine())!=null){
 
-            String x=settings.getString("LatLng","");
-            System.out.println("NEW LOCATION:"+x);
+                System.out.println("THE CURRENT LOCATION:"+message);
 
+            }
 
+            br.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-       /* Bundle bundle;
-
-        if ((bundle = getIntent().getExtras()) != null) {
-
-            String currentLocation = bundle.getString("LatLng");
-
-            String[] arrayLoc = currentLocation.split(",");
-
-            currentLat = Double.parseDouble(arrayLoc[0]);
-            currentLng = Double.parseDouble(arrayLoc[1]);
-
-            LatLng currentMarkerPosition = new LatLng(currentLat, currentLng);
-
-            mMap.addMarker(new MarkerOptions().position(currentMarkerPosition).title("current location"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(currentMarkerPosition));
-        } else {
-            System.out.println("null");
-        }*/
 
 
         init();
+    }
+
+    public GoogleMap value()
+    {
+        return mMap;
     }
 
     public void init() {

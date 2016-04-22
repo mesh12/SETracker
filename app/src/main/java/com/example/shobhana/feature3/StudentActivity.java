@@ -88,7 +88,7 @@ public class StudentActivity extends AppCompatActivity {
 
                     Bundle extras = new Bundle();
                     extras.putString("who", "student");
-                    Intent intent = new Intent(getApplicationContext(), StudentMapsActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), DriverMapsActivity.class);
                     intent.putExtras(extras);
                     startActivity(intent);
                 }

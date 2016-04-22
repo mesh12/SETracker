@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         if (settings.getString("logged", "").toString().equals("logged")) {
 
             if (settings.getString("who", "").toString().equals("student")) {
-                Intent intent = new Intent(MainActivity.this, StudentMapsActivity.class);
+                Intent intent = new Intent(MainActivity.this, DriverMapsActivity.class);
                 startActivity(intent);
             }
             else if (settings.getString("who", "").toString().equals("driver")) {

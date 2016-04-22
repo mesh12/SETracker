@@ -56,17 +56,19 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCallback,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
-    private GoogleMap mMap;
+    public static GoogleMap mMap;
     double latitude, longitude, latitude1, longitude1;
     final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     String route = "pescollege,corporationbangalore,MGRoadbangalore,indiranagar";
     int count = 0;
     String s1 = null;
     String s2 = null;
-    String emsg;
     GoogleApiClient gClient = null;
     private GoogleApiClient client;
     private String TAG="DriverMapsActivity";
+    String emsg;
+    EditText et;
+    String imei;
     Location LastLocation,CurrentLocation;
     LocationRequest mLocationRequest;
     public static final String PREFS_NAME = "LoginPrefs";
@@ -77,11 +79,17 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION
             };
+    final int RequestImeiid = 0;
+    final String [] PermissionsImei =
+            {
+
+                    android.Manifest.permission.READ_PHONE_STATE
+            };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_driver_maps);
+        setContentView(R.layout.activity_student_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -98,7 +106,7 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
             Toast.makeText(getBaseContext(), "token obtained", Toast.LENGTH_LONG).show();
         } else {
             //mInformationTextView.setText(getString(R.string.token_error_message));
-            Toast.makeText(getBaseContext(), "Error...", Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), "Success...", Toast.LENGTH_LONG).show();
         }
 
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -148,6 +156,29 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
 
         }
 
+        FloatingActionButton fab1 = (FloatingActionButton) findViewById(R.id.fab1);
+        fab1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*Snackbar.make(view, "Send a message ", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
+
+                Intent intent = new Intent(getApplicationContext(), MapsMainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.fab2);
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*Snackbar.make(view, "Give Feedback", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
+                Intent intent = new Intent(getApplicationContext(), Feedback.class);
+                startActivity(intent);
+            }
+        });
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,8 +196,9 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
                 layout.setGravity(Gravity.CLIP_VERTICAL);
                 layout.setPadding(2, 2, 2, 2);
 
-                final EditText et = new EditText(DriverMapsActivity.this);
+                et = new EditText(DriverMapsActivity.this);
                 et.setHint("Enter message");
+
 
                 LinearLayout.LayoutParams tv1Params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 tv1Params.bottomMargin = 5;
@@ -176,6 +208,8 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
                 alertDialogBuilder.setTitle("Emergency");
                 // alertDialogBuilder.setMessage("Input Student ID");
                 alertDialogBuilder.setCancelable(false);
+
+
 
                 // Setting Negative "Cancel" Button
                 alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -187,16 +221,39 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
                 alertDialogBuilder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-
                         emsg = et.getText().toString();
                         System.out.println(emsg);
 
-                        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-                        String imei=telephonyManager.getDeviceId();
-                        String message="message=hello"+"&phonenumber="+imei+"&usertype=driver";
+                        if ((int) Build.VERSION.SDK_INT < 23) {
 
-                       SendEmergency eobj = new SendEmergency();
-                       eobj.execute(message);
+
+                            System.out.println("inside <23");
+                            TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+                            imei=telephonyManager.getDeviceId();
+                        }
+
+                        else{
+                            if (ContextCompat.checkSelfPermission(DriverMapsActivity.this, android.Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED ) {
+
+                                System.out.println("inside granted");
+                                TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+                                imei=telephonyManager.getDeviceId();
+
+                            }
+                            else{
+                                System.out.println("inside request");
+                                ActivityCompat.requestPermissions(DriverMapsActivity.this, PermissionsImei, RequestImeiid);
+
+                            }
+
+
+
+                        }
+                        String message="message="+emsg+"&phonenumber="+imei+"&usertype=student";
+
+                        System.out.println("emergency message="+emsg);
+                        SendEmergency eobj=new SendEmergency();
+                        eobj.execute(message);
 
                     }
                 });
@@ -206,7 +263,8 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
                 try {
                     alertDialog.show();
                 } catch (Exception e) {
-
+                    // WindowManager$BadTokenException will be caught and the app would
+                    // not display the 'Force Close' message
                     e.printStackTrace();
                 }
             }
@@ -338,8 +396,8 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
         LatLng loc = new LatLng(currentLatitude,currentLongitude);
 
         mMap.addMarker(new MarkerOptions().position(loc).title("current location"));
-        DriverSendCoordinates ob=new DriverSendCoordinates();
-        ob.execute(coordinates);
+       // DriverSendCoordinates ob=new DriverSendCoordinates();
+       // ob.execute(coordinates);
     }
 
     @Override

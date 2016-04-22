@@ -8,15 +8,27 @@ import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import com.example.shobhana.feature3.StudentMapsActivity;
 
 public class MyGcmListenerService extends GcmListenerService {
 
     private static final String TAG = "MyGcmListenerService";
     public static final String PREFS_NAME = "LoginPrefs";
+    //private GoogleMap mMap;
 
     public MyGcmListenerService() {
 
@@ -27,6 +39,7 @@ public class MyGcmListenerService extends GcmListenerService {
 
     @Override
     public void onMessageReceived(String from, Bundle data) {
+
 
         super.onMessageReceived(from, data);
         String message ;
@@ -39,37 +52,30 @@ public class MyGcmListenerService extends GcmListenerService {
             sendNotification(message);
         }
 
-        else if ((message=data.getString("location"))!=null){
+        else {
+            if ((message = data.getString("location")) != null) {
 
-            Log.i(TAG ,from);
-            System.out.println("IN GCM LOCATION");
-            Log.i(TAG, message);
-            /*SharedPreferences settings = getSharedPreferences(TokenStatus.GCM_MESSAGE, 0);
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putString("message", "gcm message");
-            editor.putString("LatLng", message);
-            editor.commit();
+                Log.i(TAG, from);
+                System.out.println("IN GCM LOCATION");
+                Log.i(TAG, message);
+                //sendNotification(message);
+                String[] c = message.split(",");
+                Double lat=Double.parseDouble(c[0]);
+                Double lng=Double.parseDouble(c[1]);
+                LatLng loc=new LatLng(lat,lng);
+                System.out.println("location in gcm listener: " + loc);
 
-            Bundle extras = new Bundle();
-            extras.putString("LatLng", message);
-            Intent intent = new Intent(getApplicationContext(), StudentMapsActivity.class);
-            intent.putExtras(extras);
-            startActivity(intent);*/
-            if (settings.getString("who", "").toString().equals("student")) {
-                /*Intent intent = new Intent(getApplicationContext(), StudentMapsActivity.class);
-                intent.putExtra("LatLng", message);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);*/
-                settings = getSharedPreferences(TokenStatus.GCM_MESSAGE, 0);
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putString("message", "gcm message");
-                editor.putString("LatLng", message);
-                editor.commit();
+
+                String CacheDir = Environment.getExternalStorageDirectory()+"/Location_coordinates.txt";
+                File f=new File(CacheDir);
+                try {
+                    Writer fw=new FileWriter(f,true);
+                    fw.write(message);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             }
-
-
-
         }
 
 
